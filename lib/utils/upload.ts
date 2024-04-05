@@ -75,6 +75,10 @@ export const getChunk = function(file: File, start: number, length: number): Pro
 				}))
 			}
 			reject(new Error('Error while reading the file'))
+
+			// give the garbage collector a hint that we're done with the array
+			// @ts-expect-error reader.result is supposedly readonly, but it works
+			delete reader.result
 		}
 		reader.readAsArrayBuffer(file.slice(start, start + length))
 	}))
